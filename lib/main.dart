@@ -8,6 +8,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import 'services/rate_prompt.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 Future<void> main() async {
@@ -228,6 +230,8 @@ Future<void> addPackToWhatsApp(BuildContext context, Pack pack) async {
       messenger.hideCurrentSnackBar();
     }
     await _ch.invokeMethod('addToWhatsApp', {'identifier': pack.id, 'name': pack.name});
+    // Adicionou um pacote = ótimo momento: pede a avaliação nativa.
+    await RatePrompt.registerPositiveAction();
   } on PlatformException catch (e) {
     messenger.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
